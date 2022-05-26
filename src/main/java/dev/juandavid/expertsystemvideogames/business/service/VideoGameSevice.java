@@ -6,4 +6,6 @@ import org.springframework.http.ResponseEntity;
 public interface VideoGameSevice {
 
     ResponseEntity<VideoGame> findVideoGame(VideoGame videoGame);
+
+    void save(VideoGame videoGame);
 }

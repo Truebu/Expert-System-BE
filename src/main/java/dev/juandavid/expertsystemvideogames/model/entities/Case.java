@@ -26,8 +26,8 @@ public class Case {
     @JoinColumn(name = "id_client")
     private Client client;
 
-    @OneToMany(mappedBy = "case")
-    private Set<Answer> answers = new HashSet<>();
+    //@OneToMany(mappedBy = "case")
+    //private Set<Answer> answers = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "suggest", joinColumns = @JoinColumn(name = "id_case"),

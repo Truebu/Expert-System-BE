@@ -23,10 +23,10 @@ public class Answer {
     @Column(name = "answer", nullable = false, columnDefinition = "TEXT")
     private String answer;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "id_case")
     private Case aCase;
-
+*/
     @ManyToOne
     @JoinColumn(name = "id_question")
     private Question question;

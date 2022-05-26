@@ -16,4 +16,9 @@ public class VideoGameSeviceImpl implements VideoGameSevice{
     public ResponseEntity<VideoGame> findVideoGame(VideoGame videoGame) {
         return null;
     }
+
+    @Override
+    public void save(VideoGame videoGame) {
+        videoGameRepository.save(videoGame);
+    }
 }

@@ -53,4 +53,10 @@ public class VideoGame {
     @JoinTable(name = "subcategory_videogame", joinColumns = @JoinColumn(name = "id_videogame"),
             inverseJoinColumns = @JoinColumn(name = "id_subcategory"))
     private Set<SubCategory> subCategories = new HashSet<>();
+
+    public VideoGame(String name, String style, MultiplayerName multiplayerName) {
+        this.name = name;
+        this.style = style;
+        this.multiplayerName = multiplayerName;
+    }
 }

@@ -22,11 +22,19 @@ public class Client {
     @Column(name = "id", updatable = false)
     private Long id;
 
+    @Column(name = "email",nullable = false,columnDefinition = "TEXT", unique = true)
+    private String email;
+
     @Column(name = "name",nullable = false,columnDefinition = "TEXT")
     private String name;
 
-    @Column(name = "dni",nullable = false,columnDefinition = "INT", unique = true)
-    private int DNI;
+    @Column(name = "password",nullable = false,columnDefinition = "TEXT")
+    private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "client_rol", joinColumns = @JoinColumn(name = "id_client"),
+            inverseJoinColumns = @JoinColumn(name = "id_rol"))
+    private Set<Rol> rols = new HashSet<>();
 
     @OneToMany(mappedBy = "client")
     private Set<Case> cases = new HashSet<>();
