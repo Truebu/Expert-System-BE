@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -32,5 +34,10 @@ public class Case {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "suggest", joinColumns = @JoinColumn(name = "id_case"),
             inverseJoinColumns = @JoinColumn(name = "id_videogame"))
-    private Set<VideoGame> videoGames = new HashSet<>();
+    private List<VideoGame> videoGames = new ArrayList<>();
+
+    public Case(Client client, List<VideoGame> videoGames) {
+        this.client = client;
+        this.videoGames = videoGames;
+    }
 }

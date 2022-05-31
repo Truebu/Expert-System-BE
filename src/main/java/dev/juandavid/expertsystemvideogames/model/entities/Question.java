@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -26,9 +28,9 @@ public class Question {
     private String question;
 
     @OneToMany(mappedBy = "question")
-    private Set<Answer> answers = new HashSet<>();
+    private List<Answer> answers = new ArrayList<>();
 
     @OneToMany(mappedBy = "question")
-    private Set<AnswerQuestion> answerQuestions= new HashSet<>();
+    private List<AnswerQuestion> answerQuestions= new ArrayList<>();
 
 }

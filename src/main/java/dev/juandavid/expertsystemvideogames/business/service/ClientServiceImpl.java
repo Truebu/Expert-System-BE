@@ -2,6 +2,7 @@ package dev.juandavid.expertsystemvideogames.business.service;
 
 import dev.juandavid.expertsystemvideogames.business.exception.ApiRequestException;
 import dev.juandavid.expertsystemvideogames.model.dto.JwtDto;
+import dev.juandavid.expertsystemvideogames.model.dto.MessageAuthDto;
 import dev.juandavid.expertsystemvideogames.model.dto.MessageDto;
 import dev.juandavid.expertsystemvideogames.model.entities.Client;
 import dev.juandavid.expertsystemvideogames.model.entities.Rol;
@@ -48,7 +49,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ResponseEntity<JwtDto> saveNewClient(Client client) {
+    public ResponseEntity<MessageAuthDto> saveNewClient(Client client) {
         if(clientRepository.findByEmail(client.getEmail()).isPresent()){
             throw new ApiRequestException("Email ya tomado");
         }
@@ -57,25 +58,28 @@ public class ClientServiceImpl implements ClientService {
         roles.add(rolService.getByRolName(RolName.ROLE_USER).get());
         client.setRols(roles);
         clientRepository.save(client);
-        return new ResponseEntity(new MessageDto("Registro exitoso"), HttpStatus.CREATED);
+        return new ResponseEntity(new MessageDto("registro"), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<JwtDto> LoginClient(Client client) {
+    public ResponseEntity<MessageAuthDto> LoginClient(Client client) {
         Optional<Client> clientByEmail = clientRepository.findByEmail(client.getEmail());
         if(!clientByEmail.isPresent()){
             throw new ApiRequestException("Contraseña o correo erroneo");
         }
         if (passwordEncoder.matches(client.getPassword(),clientByEmail.get().getPassword())){
-            Authentication authentication =
-                    authenticationManager.authenticate
-                            (new UsernamePasswordAuthenticationToken(client.getEmail(), client.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            JwtDto jwtDto = new JwtDto(
-                    jwtProvider.generateToken(authentication), userDetails.getUsername(), userDetails.getAuthorities());
-            return  new ResponseEntity<>(jwtDto, HttpStatus.OK);
+            return genarateToken(client);
         }
         throw new ApiRequestException("Contraseña o correo erroneo");
+    }
+
+    private ResponseEntity<MessageAuthDto> genarateToken(Client client){
+        Authentication authentication =
+                authenticationManager.authenticate
+                        (new UsernamePasswordAuthenticationToken(client.getEmail(), client.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return  new ResponseEntity<>(new MessageAuthDto("Ingreso exitoso",
+                "Bearer "+jwtProvider.generateToken(authentication)), HttpStatus.OK);
     }
 }

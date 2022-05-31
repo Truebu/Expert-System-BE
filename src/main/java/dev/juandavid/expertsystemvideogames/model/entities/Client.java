@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -37,5 +39,5 @@ public class Client {
     private Set<Rol> rols = new HashSet<>();
 
     @OneToMany(mappedBy = "client")
-    private Set<Case> cases = new HashSet<>();
+    private List<Case> cases = new ArrayList<>();
 }

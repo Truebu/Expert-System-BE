@@ -16,48 +16,48 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
-    private Client user;
+    private Client client;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public static CustomUserDetails build(Client user) {
+    public static CustomUserDetails build(Client client) {
         List<GrantedAuthority> authorities =
-                user.getRols().stream().map(rol -> new SimpleGrantedAuthority(rol
+                client.getRols().stream().map(rol -> new SimpleGrantedAuthority(rol
                         .getRolName().name())).collect(Collectors.toList());
-        return new CustomUserDetails(user, authorities);
+        return new CustomUserDetails(client, authorities);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return client.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return client.getEmail();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

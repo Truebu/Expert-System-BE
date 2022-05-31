@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,14 +21,15 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-@AllArgsConstructor
 @NoArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final static Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
-    private Set<String> skipUrls = new HashSet<>(Arrays.asList("/api/v*/user/**"));
+    private Set<String> skipUrls = new HashSet<>(Arrays.asList("/api/v*/client/**"));
     private AntPathMatcher pathMatcher = new AntPathMatcher();
+    @Autowired
     private JwtProvider jwtProvider;
+    @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
     @Override
